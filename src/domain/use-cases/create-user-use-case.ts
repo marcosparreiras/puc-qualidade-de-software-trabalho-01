@@ -20,14 +20,18 @@ export class CreateUserUseCase {
     name,
     password,
   }: CreateUserUseCaseRequest): Promise<CreateUserUseCaseResponse> {
-    const EmailAlreadyRegistered = await this.userRepository.findByEmail(email);
-    if (EmailAlreadyRegistered !== null) {
-      throw new EmailAlreadyRegisteredException();
-    }
-
+    await this.assertEmailIsAvailable(email);
     const user = UserEntity.create({ email, name, password });
     await this.userRepository.create(user);
-
     return { user };
+  }
+
+  private async assertEmailIsAvailable(email: string): Promise<void> {
+    const EmailAlreadyRegistered = await this.userRepository.existsByEmail(
+      email
+    );
+    if (EmailAlreadyRegistered) {
+      throw new EmailAlreadyRegisteredException();
+    }
   }
 }

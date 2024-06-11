@@ -52,8 +52,14 @@ export class UpdateUserUseCase {
     if (!emailChanged) {
       return;
     }
-    const emailAlreadyRegistered = await this.userRepository.findByEmail(email);
-    if (emailAlreadyRegistered) {
+    await this.assertEmailIsAvailable(email);
+  }
+
+  private async assertEmailIsAvailable(email: string): Promise<void> {
+    const EmailAlreadyRegistered = await this.userRepository.existsByEmail(
+      email
+    );
+    if (EmailAlreadyRegistered) {
       throw new EmailAlreadyRegisteredException();
     }
   }

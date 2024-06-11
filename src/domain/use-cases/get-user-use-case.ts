@@ -16,10 +16,15 @@ export class GetUserUseCase {
   public async execute({
     userId,
   }: GetUserUseCaseRequest): Promise<GetUserUseCaseRespose> {
-    const user = await this.userRepository.findById(userId);
+    const user = await this.getUserById(userId);
+    return { user };
+  }
+
+  private async getUserById(id: string): Promise<UserEntity> {
+    const user = await this.userRepository.findById(id);
     if (user === null) {
       throw new UserNotFoundException();
     }
-    return { user };
+    return user;
   }
 }

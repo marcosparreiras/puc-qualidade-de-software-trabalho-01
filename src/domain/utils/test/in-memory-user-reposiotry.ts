@@ -18,9 +18,9 @@ export class InMemoryUserRepository implements UserRepository {
     return user ?? null;
   }
 
-  public async findByEmail(email: string): Promise<UserEntity | null> {
-    const user = this.items.find((item) => item.email === email);
-    return user ?? null;
+  public async existsByEmail(email: string): Promise<boolean> {
+    const index = this.items.findIndex((item) => item.email === email);
+    return index === -1 ? false : true;
   }
 
   public async create(user: UserEntity): Promise<void> {
