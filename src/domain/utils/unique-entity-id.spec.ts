@@ -1,10 +1,10 @@
 import { randomUUID } from "node:crypto";
 import { UniqueEntityId } from "./unique-entity-id";
 
-describe("UniqueEntityId", () => {
+describe("UniqueEntityId - Domain Util", () => {
   it("Should be able to generate a unique-entity-id", () => {
     const entityId = UniqueEntityId.generate();
-    expect(entityId.value).not.toBeNull();
+    expect(entityId.value).not.toBeFalsy();
   });
 
   it("Should be able to load an reference of unique-entity-id", () => {
