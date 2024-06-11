@@ -13,10 +13,6 @@ export class InMemoryUserRepository implements UserRepository {
     return users;
   }
 
-  public async create(user: UserEntity): Promise<void> {
-    this.items.push(user);
-  }
-
   public async findById(id: string): Promise<UserEntity | null> {
     const user = this.items.find((item) => item.id === id);
     return user ?? null;
@@ -25,5 +21,17 @@ export class InMemoryUserRepository implements UserRepository {
   public async findByEmail(email: string): Promise<UserEntity | null> {
     const user = this.items.find((item) => item.email === email);
     return user ?? null;
+  }
+
+  public async create(user: UserEntity): Promise<void> {
+    this.items.push(user);
+  }
+
+  public async save(user: UserEntity): Promise<void> {
+    const index = this.items.findIndex((item) => item.compare(user));
+    if (index < 0) {
+      return;
+    }
+    this.items[index] = user;
   }
 }

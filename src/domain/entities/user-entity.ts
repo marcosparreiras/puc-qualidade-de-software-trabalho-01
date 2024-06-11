@@ -1,4 +1,4 @@
-import { InvalidUserPassword } from "../exceptions/invalid-user-password-exception";
+import { InvalidUserPasswordExecption } from "../exceptions/invalid-user-password-exception";
 import { Password } from "../value-objects/password";
 import { DomainEntity } from "./domain-entity";
 
@@ -20,8 +20,16 @@ export class UserEntity extends DomainEntity<UserEntityProps> {
     return this.props.name;
   }
 
+  set name(name: string) {
+    this.props.name = name;
+  }
+
   get email(): string {
     return this.props.email;
+  }
+
+  set email(email: string) {
+    this.props.email = email;
   }
 
   get passwordHash(): string {
@@ -31,7 +39,7 @@ export class UserEntity extends DomainEntity<UserEntityProps> {
   public authenticate(password: string): void {
     const isAuthenticaded = this.props.password.compare(password);
     if (!isAuthenticaded) {
-      throw new InvalidUserPassword();
+      throw new InvalidUserPasswordExecption();
     }
   }
 

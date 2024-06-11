@@ -5,4 +5,5 @@ export interface UserRepository {
   findById(id: string): Promise<UserEntity | null>;
   findByEmail(email: string): Promise<UserEntity | null>;
   create(user: UserEntity): Promise<void>;
+  save(user: UserEntity): Promise<void>;
 }

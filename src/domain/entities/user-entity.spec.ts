@@ -1,4 +1,4 @@
-import { InvalidUserPassword } from "../exceptions/invalid-user-password-exception";
+import { InvalidUserPasswordExecption } from "../exceptions/invalid-user-password-exception";
 import { GlobalPasswordEncoder } from "../utils/global-password-encoder";
 import { FakePasswordEncoder } from "../utils/test/fake-password-encoder";
 import { UserEntity } from "./user-entity";
@@ -69,7 +69,7 @@ describe("UserEntity - Domain Entity", () => {
     });
 
     expect(() => user.authenticate("invalid-password")).toThrowError(
-      InvalidUserPassword
+      InvalidUserPasswordExecption
     );
   });
 
@@ -102,6 +102,34 @@ describe("UserEntity - Domain Entity", () => {
 
     expect(() =>
       user.chagePassword("incorrect-old-password", "new-password")
-    ).toThrowError(InvalidUserPassword);
+    ).toThrowError(InvalidUserPasswordExecption);
+  });
+
+  it("Should be able to set a user new name", () => {
+    const newName = "Jeff Alfred";
+    const user = UserEntity.create({
+      name,
+      email,
+      password: palinTextPassowrd,
+    });
+
+    user.name = newName;
+
+    expect(user.name).toEqual(newName);
+    expect(user.name).not.toEqual(name);
+  });
+
+  it("Should be able to set a user new email", () => {
+    const newEmail = "jeffalfred@example.com";
+    const user = UserEntity.create({
+      name,
+      email,
+      password: palinTextPassowrd,
+    });
+
+    user.email = newEmail;
+
+    expect(user.email).toEqual(newEmail);
+    expect(user.email).not.toEqual(email);
   });
 });
