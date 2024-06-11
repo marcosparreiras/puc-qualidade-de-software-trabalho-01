@@ -1,13 +1,7 @@
-import { randomUUID } from "crypto";
-import { DomainEntity } from "./domain-entity";
+import { randomUUID } from "node:crypto";
+import { FakeDomainEntityImp } from "../utils/test/fake-domain-entity-imp";
 
 describe("DomainEntity - Domain Layer Super Type", () => {
-  class FakeDomainEntityImp extends DomainEntity<null> {
-    constructor(id?: string) {
-      super(null, id);
-    }
-  }
-
   it("Should be able to create a new domain-entity", () => {
     const domainEntity = new FakeDomainEntityImp();
     expect(domainEntity.id).not.toBeFalsy();
