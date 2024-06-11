@@ -15,12 +15,12 @@ export class Password {
     return new Password(cipher);
   }
 
-  public static create(plain: string) {
-    const cipher = GlobalPasswordEncoder.getInstance().hash(plain);
+  public static async create(plain: string): Promise<Password> {
+    const cipher = await GlobalPasswordEncoder.getInstance().hash(plain);
     return new Password(cipher);
   }
 
-  public compare(plain: string) {
+  public async compare(plain: string): Promise<boolean> {
     return GlobalPasswordEncoder.getInstance().compare(plain, this.cipher);
   }
 }

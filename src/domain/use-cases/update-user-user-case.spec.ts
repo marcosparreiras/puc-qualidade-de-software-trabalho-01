@@ -24,7 +24,7 @@ describe("UpdateUserUseCase - Domain Use Case", () => {
 
   it("Should be able to update a user data", async () => {
     const oldPassword = "123456";
-    const someRegisteredUser = FakeUserFactory.makeOne({
+    const someRegisteredUser = await FakeUserFactory.makeOne({
       password: oldPassword,
     });
     inMemoryUserRepository.items.push(someRegisteredUser);
@@ -45,7 +45,7 @@ describe("UpdateUserUseCase - Domain Use Case", () => {
     expect(response.user.name).toEqual(name);
     expect(response.user.email).toEqual(email);
 
-    const isPasswordUpdated = fakePasswordEncoder.compare(
+    const isPasswordUpdated = await fakePasswordEncoder.compare(
       newPassword,
       response.user.passwordHash
     );
@@ -80,7 +80,10 @@ describe("UpdateUserUseCase - Domain Use Case", () => {
     const email = "johdoe@example.com";
     const oldPassword = "123456";
 
-    const user01 = FakeUserFactory.makeOne({ email, password: oldPassword });
+    const user01 = await FakeUserFactory.makeOne({
+      email,
+      password: oldPassword,
+    });
 
     inMemoryUserRepository.items.push(user01);
 
@@ -102,8 +105,10 @@ describe("UpdateUserUseCase - Domain Use Case", () => {
     const email = "johdoe@example.com";
     const oldPassword = "123456";
 
-    const user01 = FakeUserFactory.makeOne({ email });
-    const user02 = FakeUserFactory.makeOne({ password: oldPassword });
+    const [user01, user02] = await Promise.all([
+      FakeUserFactory.makeOne({ email }),
+      FakeUserFactory.makeOne({ password: oldPassword }),
+    ]);
 
     inMemoryUserRepository.items.push(user01, user02);
 
@@ -124,7 +129,7 @@ describe("UpdateUserUseCase - Domain Use Case", () => {
   it("Should not be able to update a user with incorrect credentials", async () => {
     const oldPassword = "123456";
 
-    const user01 = FakeUserFactory.makeOne({ password: oldPassword });
+    const user01 = await FakeUserFactory.makeOne({ password: oldPassword });
 
     inMemoryUserRepository.items.push(user01);
 

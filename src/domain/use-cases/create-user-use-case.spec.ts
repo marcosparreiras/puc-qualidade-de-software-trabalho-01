@@ -35,7 +35,7 @@ describe("CreateUserUseCase - Domain Use Case", () => {
     expect(response.user.name).toEqual(name);
     expect(response.user.email).toEqual(email);
 
-    const isPasswordCorrectlyHashed = fakePasswordEncoder.compare(
+    const isPasswordCorrectlyHashed = await fakePasswordEncoder.compare(
       password,
       response.user.passwordHash
     );
@@ -51,7 +51,7 @@ describe("CreateUserUseCase - Domain Use Case", () => {
 
   it("Should not be able to create with a duplicate email", async () => {
     const email = "johndoe@example.com";
-    const someRegisteredUser = FakeUserFactory.makeOne({ email });
+    const someRegisteredUser = await FakeUserFactory.makeOne({ email });
     inMemoryUserRepository.items.push(someRegisteredUser);
 
     const name = "John Doe";

@@ -19,33 +19,33 @@ describe("GlobalPasswordEncoder - Domain Util", () => {
     expect(globalPasswordEncoder).toBe(globalPasswordEncoder2);
   });
 
-  it("should be a virtual proxy for a password-encoder implementation", () => {
+  it("should be a virtual proxy for a password-encoder implementation", async () => {
     const globalPasswordEncoder = GlobalPasswordEncoder.getInstance();
     globalPasswordEncoder.config(fakePasswordEncoder);
 
     const plainTextPassword = "123456";
-    const passwordHash = fakePasswordEncoder.hash(plainTextPassword);
+    const passwordHash = await fakePasswordEncoder.hash(plainTextPassword);
 
     const isHashEquals =
-      globalPasswordEncoder.hash(plainTextPassword) ===
-      fakePasswordEncoder.hash(plainTextPassword);
+      (await globalPasswordEncoder.hash(plainTextPassword)) ===
+      (await fakePasswordEncoder.hash(plainTextPassword));
     const isCompareEquals =
-      globalPasswordEncoder.compare(plainTextPassword, passwordHash) ===
-      fakePasswordEncoder.compare(plainTextPassword, passwordHash);
+      (await globalPasswordEncoder.compare(plainTextPassword, passwordHash)) ===
+      (await fakePasswordEncoder.compare(plainTextPassword, passwordHash));
 
     expect(isHashEquals).toBe(true);
     expect(isCompareEquals).toBe(true);
   });
 
-  it("Should trhow an error when the encoder is not setup", () => {
+  it("Should trhow an error when the encoder is not setup", async () => {
     const globalPasswordEncoder = GlobalPasswordEncoder.getInstance();
 
-    expect(() => globalPasswordEncoder.hash("123456")).toThrowError(
-      EncoderNotRegisteredException
-    );
+    await expect(() =>
+      globalPasswordEncoder.hash("123456")
+    ).rejects.toBeInstanceOf(EncoderNotRegisteredException);
 
-    expect(() =>
+    await expect(() =>
       globalPasswordEncoder.compare("123456", "123456-hashed")
-    ).toThrowError(EncoderNotRegisteredException);
+    ).rejects.toBeInstanceOf(EncoderNotRegisteredException);
   });
 });

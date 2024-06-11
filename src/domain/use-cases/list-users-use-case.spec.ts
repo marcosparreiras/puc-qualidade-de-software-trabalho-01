@@ -21,7 +21,7 @@ describe("ListUsersUseCase - Domain Use Case", () => {
 
   it("Should be able to get a list of users", async () => {
     const usersNumber = 10;
-    const users: UserEntity[] = FakeUserFactory.makeMany(usersNumber);
+    const users: UserEntity[] = await FakeUserFactory.makeMany(usersNumber);
     inMemoryUserRepository.items.push(...users);
 
     const response = await sut.execute({ page: 1 });
@@ -30,7 +30,7 @@ describe("ListUsersUseCase - Domain Use Case", () => {
 
   it("Should be able to paginate the users list result", async () => {
     const usersNumber = 33;
-    const users: UserEntity[] = FakeUserFactory.makeMany(usersNumber);
+    const users: UserEntity[] = await FakeUserFactory.makeMany(usersNumber);
     inMemoryUserRepository.items.push(...users);
 
     const [responseP1, responseP2] = await Promise.all([
@@ -46,7 +46,7 @@ describe("ListUsersUseCase - Domain Use Case", () => {
 
   it("Should be able to retrieve the first page with the page parameter is less the 1 ", async () => {
     const usersNumber = 7;
-    const users: UserEntity[] = FakeUserFactory.makeMany(usersNumber);
+    const users: UserEntity[] = await FakeUserFactory.makeMany(usersNumber);
     inMemoryUserRepository.items.push(...users);
 
     const [responseP0, responsePN5] = await Promise.all([

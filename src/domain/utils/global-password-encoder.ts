@@ -18,14 +18,14 @@ export class GlobalPasswordEncoder implements PasswordEncoder {
     this.encoder = encoder;
   }
 
-  public compare(plain: string, cipher: string): boolean {
+  public async compare(plain: string, cipher: string): Promise<boolean> {
     if (!this.encoder) {
       throw new EncoderNotRegisteredException();
     }
     return this.encoder.compare(plain, cipher);
   }
 
-  public hash(plain: string): string {
+  public async hash(plain: string): Promise<string> {
     if (!this.encoder) {
       throw new EncoderNotRegisteredException();
     }

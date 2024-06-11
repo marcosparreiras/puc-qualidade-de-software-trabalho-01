@@ -36,16 +36,19 @@ export class UserEntity extends DomainEntity<UserEntityProps> {
     return this.props.password.hash;
   }
 
-  public authenticate(password: string): void {
-    const isAuthenticaded = this.props.password.compare(password);
+  public async authenticate(password: string): Promise<void> {
+    const isAuthenticaded = await this.props.password.compare(password);
     if (!isAuthenticaded) {
       throw new InvalidUserPasswordExecption();
     }
   }
 
-  public chagePassword(oldPassword: string, newPassword: string): void {
-    this.authenticate(oldPassword);
-    this.props.password = Password.create(newPassword);
+  public async chagePassword(
+    oldPassword: string,
+    newPassword: string
+  ): Promise<void> {
+    await this.authenticate(oldPassword);
+    this.props.password = await Password.create(newPassword);
   }
 
   protected constructor(props: UserEntityProps, id?: string) {
@@ -53,16 +56,15 @@ export class UserEntity extends DomainEntity<UserEntityProps> {
   }
 
   public static load(props: UserEntityPropsWithPlainTextPassword, id: string) {
-    return new UserEntity(this.makePropsWithHahedPassword(props), id);
+    const laodProps = { ...props, password: Password.laod(props.password) };
+    return new UserEntity(laodProps, id);
   }
 
-  public static create(props: UserEntityPropsWithPlainTextPassword) {
-    return new UserEntity(this.makePropsWithHahedPassword(props));
-  }
-
-  private static makePropsWithHahedPassword(
-    props: UserEntityPropsWithPlainTextPassword
-  ): UserEntityProps {
-    return { ...props, password: Password.create(props.password) };
+  public static async create(props: UserEntityPropsWithPlainTextPassword) {
+    const createProps = {
+      ...props,
+      password: await Password.create(props.password),
+    };
+    return new UserEntity(createProps);
   }
 }

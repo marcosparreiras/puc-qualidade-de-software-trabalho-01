@@ -8,16 +8,16 @@ describe("Password - Domain Value Object", () => {
   let plainText: string;
   let hash: string;
 
-  beforeAll(() => {
+  beforeAll(async () => {
     fakePasswordEncoder = new FakePasswordEncoder();
     GlobalPasswordEncoder.getInstance().config(fakePasswordEncoder);
 
     plainText = "123456";
-    hash = fakePasswordEncoder.hash(plainText);
+    hash = await fakePasswordEncoder.hash(plainText);
   });
 
-  it("Should be able to hash a plain text password", () => {
-    const password = Password.create(plainText);
+  it("Should be able to hash a plain text password", async () => {
+    const password = await Password.create(plainText);
     expect(password.hash).not.toEqual(plainText);
     expect(password.hash).toEqual(hash);
   });
@@ -28,16 +28,16 @@ describe("Password - Domain Value Object", () => {
     expect(password.hash).toEqual(hash);
   });
 
-  it("Should be able validate a correct password", () => {
+  it("Should be able validate a correct password", async () => {
     const password = Password.laod(hash);
-    const isValid = password.compare(plainText);
+    const isValid = await password.compare(plainText);
     expect(isValid).toBe(true);
   });
 
-  it("Should be able detect an invalid password", () => {
+  it("Should be able detect an invalid password", async () => {
     const invalidPlainText = plainText + "invalid";
     const password = Password.laod(hash);
-    const isValid = password.compare(invalidPlainText);
+    const isValid = await password.compare(invalidPlainText);
     expect(isValid).toBe(false);
   });
 });

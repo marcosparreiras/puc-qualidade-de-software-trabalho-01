@@ -28,7 +28,7 @@ export class UpdateUserUseCase {
     const user = await this.getUserById(userId);
     await this.checkUserNewEmailAvailability(user, email);
 
-    user.chagePassword(oldPassword, newPassword);
+    await user.chagePassword(oldPassword, newPassword);
     user.name = name;
     user.email = email;
 

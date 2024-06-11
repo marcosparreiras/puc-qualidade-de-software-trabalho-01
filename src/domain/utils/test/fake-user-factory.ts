@@ -5,10 +5,10 @@ import {
 import { faker } from "@faker-js/faker";
 
 export class FakeUserFactory {
-  static makeOne(
+  static async makeOne(
     partialProps: Partial<UserEntityPropsWithPlainTextPassword> = {},
     id?: string
-  ): UserEntity {
+  ): Promise<UserEntity> {
     const props = {
       name: faker.internet.userName(),
       email: faker.internet.email(),
@@ -21,10 +21,10 @@ export class FakeUserFactory {
       : UserEntity.create(props);
   }
 
-  static makeMany(num: number): UserEntity[] {
+  static async makeMany(num: number): Promise<UserEntity[]> {
     const users: UserEntity[] = [];
     for (let i = 0; i < num; i++) {
-      users.push(this.makeOne());
+      users.push(await this.makeOne());
     }
     return users;
   }

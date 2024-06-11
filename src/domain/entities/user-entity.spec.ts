@@ -11,18 +11,18 @@ describe("UserEntity - Domain Entity", () => {
   let palinTextPassowrd: string;
   let passwordHash: string;
 
-  beforeAll(() => {
+  beforeAll(async () => {
     fakePasswordEncoder = new FakePasswordEncoder();
     GlobalPasswordEncoder.getInstance().config(fakePasswordEncoder);
 
     name = "John Doe";
     email = "johndoe@example.com";
     palinTextPassowrd = "123456";
-    passwordHash = fakePasswordEncoder.hash(palinTextPassowrd);
+    passwordHash = await fakePasswordEncoder.hash(palinTextPassowrd);
   });
 
-  it("Should be able to create a new in-memory user-entity", () => {
-    const user = UserEntity.create({
+  it("Should be able to create a new in-memory user-entity", async () => {
+    const user = await UserEntity.create({
       name,
       email,
       password: palinTextPassowrd,
@@ -40,7 +40,7 @@ describe("UserEntity - Domain Entity", () => {
       {
         name,
         email,
-        password: palinTextPassowrd,
+        password: passwordHash,
       },
       id
     );
@@ -51,30 +51,30 @@ describe("UserEntity - Domain Entity", () => {
     expect(user.id).toEqual("some-fake-id");
   });
 
-  it("Should be able to authenticate a user by password", () => {
-    const user = UserEntity.create({
+  it("Should be able to authenticate a user by password", async () => {
+    const user = await UserEntity.create({
       name,
       email,
       password: palinTextPassowrd,
     });
 
-    expect(() => user.authenticate(palinTextPassowrd)).not.throws();
+    await expect(user.authenticate(palinTextPassowrd)).resolves.toBeUndefined();
   });
 
-  it("Should not be able to authenticate a user with incorrect password", () => {
-    const user = UserEntity.create({
+  it("Should not be able to authenticate a user with incorrect password", async () => {
+    const user = await UserEntity.create({
       name,
       email,
       password: palinTextPassowrd,
     });
 
-    expect(() => user.authenticate("invalid-password")).toThrowError(
-      InvalidUserPasswordExecption
-    );
+    await expect(() =>
+      user.authenticate("invalid-password")
+    ).rejects.toBeInstanceOf(InvalidUserPasswordExecption);
   });
 
-  it("Should  be able to change a user password", () => {
-    const user = UserEntity.create({
+  it("Should  be able to change a user password", async () => {
+    const user = await UserEntity.create({
       name,
       email,
       password: palinTextPassowrd,
@@ -82,32 +82,32 @@ describe("UserEntity - Domain Entity", () => {
 
     const newPlainTextPassword = "new-password";
 
-    user.chagePassword(palinTextPassowrd, newPlainTextPassword);
+    await user.chagePassword(palinTextPassowrd, newPlainTextPassword);
 
     expect(
-      fakePasswordEncoder.compare(newPlainTextPassword, user.passwordHash)
+      await fakePasswordEncoder.compare(newPlainTextPassword, user.passwordHash)
     ).toBe(true);
 
     expect(
-      fakePasswordEncoder.compare(palinTextPassowrd, user.passwordHash)
+      await fakePasswordEncoder.compare(palinTextPassowrd, user.passwordHash)
     ).toBe(false);
   });
 
-  it("Should not be able to change a user password with incorrect credentials", () => {
-    const user = UserEntity.create({
+  it("Should not be able to change a user password with incorrect credentials", async () => {
+    const user = await UserEntity.create({
       name,
       email,
       password: palinTextPassowrd,
     });
 
-    expect(() =>
+    await expect(() =>
       user.chagePassword("incorrect-old-password", "new-password")
-    ).toThrowError(InvalidUserPasswordExecption);
+    ).rejects.toBeInstanceOf(InvalidUserPasswordExecption);
   });
 
-  it("Should be able to set a user new name", () => {
+  it("Should be able to set a user new name", async () => {
     const newName = "Jeff Alfred";
-    const user = UserEntity.create({
+    const user = await UserEntity.create({
       name,
       email,
       password: palinTextPassowrd,
@@ -119,9 +119,9 @@ describe("UserEntity - Domain Entity", () => {
     expect(user.name).not.toEqual(name);
   });
 
-  it("Should be able to set a user new email", () => {
+  it("Should be able to set a user new email", async () => {
     const newEmail = "jeffalfred@example.com";
-    const user = UserEntity.create({
+    const user = await UserEntity.create({
       name,
       email,
       password: palinTextPassowrd,

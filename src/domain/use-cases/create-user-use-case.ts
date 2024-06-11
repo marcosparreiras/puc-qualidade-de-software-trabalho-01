@@ -21,7 +21,7 @@ export class CreateUserUseCase {
     password,
   }: CreateUserUseCaseRequest): Promise<CreateUserUseCaseResponse> {
     await this.assertEmailIsAvailable(email);
-    const user = UserEntity.create({ email, name, password });
+    const user = await UserEntity.create({ email, name, password });
     await this.userRepository.create(user);
     return { user };
   }

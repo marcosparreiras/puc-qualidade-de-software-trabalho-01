@@ -21,7 +21,7 @@ describe("GetUserUseCase - Domain Use Case", () => {
   });
 
   it("Should be able to get a user by id", async () => {
-    const someRegisteredUser = FakeUserFactory.makeOne();
+    const someRegisteredUser = await FakeUserFactory.makeOne();
     inMemoryUserRepository.items.push(someRegisteredUser);
 
     const response = await sut.execute({ userId: someRegisteredUser.id });
