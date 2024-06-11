@@ -8,7 +8,7 @@ interface UserEntityProps {
   password: Password;
 }
 
-type UserEntityPropsWithPlainTextPassword = Omit<
+export type UserEntityPropsWithPlainTextPassword = Omit<
   UserEntityProps,
   "password"
 > & {
