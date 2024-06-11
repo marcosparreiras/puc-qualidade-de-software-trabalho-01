@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test:unit": "vitest"
+    "test:unit": "vitest run",
+    "test:integration": "vitest run --config ./vitest.config.integration.ts"
   },
   "keywords": [],
   "author": "",
