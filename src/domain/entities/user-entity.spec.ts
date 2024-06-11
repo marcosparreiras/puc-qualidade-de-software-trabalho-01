@@ -81,7 +81,7 @@ describe("UserEntity - Domain Entity", () => {
       fakePasswordEncoder
     );
 
-    user.chagePasword(palinTextPassowrd, newPassword);
+    user.chagePassword(palinTextPassowrd, newPassword);
 
     expect(
       fakePasswordEncoder.compare(newPlainTextPassword, user.passwordHash)
@@ -102,7 +102,7 @@ describe("UserEntity - Domain Entity", () => {
     const newPassword = Password.create("new-password", fakePasswordEncoder);
 
     expect(() =>
-      user.chagePasword("incorrect-old-password", newPassword)
+      user.chagePassword("incorrect-old-password", newPassword)
     ).toThrowError(InvalidUserPassword);
   });
 });

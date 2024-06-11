@@ -28,7 +28,7 @@ export class UserEntity extends DomainEntity<UserEntityProps> {
     }
   }
 
-  public chagePasword(oldPassword: string, newPassword: Password): void {
+  public chagePassword(oldPassword: string, newPassword: Password): void {
     this.authenticate(oldPassword);
     this.props.password = newPassword;
   }
