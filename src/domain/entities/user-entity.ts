@@ -1,5 +1,5 @@
 import { InvalidUserPassword } from "../exceptions/invalid-user-password-exception";
-import type { Password } from "../value-objects/password";
+import { Password } from "../value-objects/password";
 import { DomainEntity } from "./domain-entity";
 
 interface UserEntityProps {
@@ -7,6 +7,13 @@ interface UserEntityProps {
   email: string;
   password: Password;
 }
+
+type UserEntityPropsWithPlainTextPassword = Omit<
+  UserEntityProps,
+  "password"
+> & {
+  password: string;
+};
 
 export class UserEntity extends DomainEntity<UserEntityProps> {
   get name(): string {
@@ -28,20 +35,26 @@ export class UserEntity extends DomainEntity<UserEntityProps> {
     }
   }
 
-  public chagePassword(oldPassword: string, newPassword: Password): void {
+  public chagePassword(oldPassword: string, newPassword: string): void {
     this.authenticate(oldPassword);
-    this.props.password = newPassword;
+    this.props.password = Password.create(newPassword);
   }
 
   protected constructor(props: UserEntityProps, id?: string) {
     super(props, id);
   }
 
-  public static load(props: UserEntityProps, id: string) {
-    return new UserEntity(props, id);
+  public static load(props: UserEntityPropsWithPlainTextPassword, id: string) {
+    return new UserEntity(this.makePropsWithHahedPassword(props), id);
   }
 
-  public static create(props: UserEntityProps) {
-    return new UserEntity(props);
+  public static create(props: UserEntityPropsWithPlainTextPassword) {
+    return new UserEntity(this.makePropsWithHahedPassword(props));
+  }
+
+  private static makePropsWithHahedPassword(
+    props: UserEntityPropsWithPlainTextPassword
+  ): UserEntityProps {
+    return { ...props, password: Password.create(props.password) };
   }
 }

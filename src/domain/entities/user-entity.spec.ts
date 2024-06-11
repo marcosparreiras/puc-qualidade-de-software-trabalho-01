@@ -1,20 +1,23 @@
 import { InvalidUserPassword } from "../exceptions/invalid-user-password-exception";
+import { GlobalPasswordEncoder } from "../utils/global-password-encoder";
 import { FakePasswordEncoder } from "../utils/test/fake-password-encoder";
-import { Password } from "../value-objects/password";
 import { UserEntity } from "./user-entity";
 
 describe("UserEntity - Domain Entity", () => {
+  let fakePasswordEncoder: FakePasswordEncoder;
+
   let name: string;
   let email: string;
   let palinTextPassowrd: string;
-  let fakePasswordEncoder: FakePasswordEncoder;
   let passwordHash: string;
 
   beforeAll(() => {
+    fakePasswordEncoder = new FakePasswordEncoder();
+    GlobalPasswordEncoder.getInstance().config(fakePasswordEncoder);
+
     name = "John Doe";
     email = "johndoe@example.com";
     palinTextPassowrd = "123456";
-    fakePasswordEncoder = new FakePasswordEncoder();
     passwordHash = fakePasswordEncoder.hash(palinTextPassowrd);
   });
 
@@ -22,8 +25,9 @@ describe("UserEntity - Domain Entity", () => {
     const user = UserEntity.create({
       name,
       email,
-      password: Password.create(palinTextPassowrd, new FakePasswordEncoder()),
+      password: palinTextPassowrd,
     });
+
     expect(user.name).toEqual("John Doe");
     expect(user.email).toEqual("johndoe@example.com");
     expect(user.passwordHash).toEqual(passwordHash);
@@ -36,10 +40,11 @@ describe("UserEntity - Domain Entity", () => {
       {
         name,
         email,
-        password: Password.create(palinTextPassowrd, new FakePasswordEncoder()),
+        password: palinTextPassowrd,
       },
       id
     );
+
     expect(user.name).toEqual("John Doe");
     expect(user.email).toEqual("johndoe@example.com");
     expect(user.passwordHash).toEqual(passwordHash);
@@ -50,7 +55,7 @@ describe("UserEntity - Domain Entity", () => {
     const user = UserEntity.create({
       name,
       email,
-      password: Password.create(palinTextPassowrd, new FakePasswordEncoder()),
+      password: palinTextPassowrd,
     });
 
     expect(() => user.authenticate(palinTextPassowrd)).not.throws();
@@ -60,7 +65,7 @@ describe("UserEntity - Domain Entity", () => {
     const user = UserEntity.create({
       name,
       email,
-      password: Password.create(palinTextPassowrd, new FakePasswordEncoder()),
+      password: palinTextPassowrd,
     });
 
     expect(() => user.authenticate("invalid-password")).toThrowError(
@@ -72,16 +77,12 @@ describe("UserEntity - Domain Entity", () => {
     const user = UserEntity.create({
       name,
       email,
-      password: Password.create(palinTextPassowrd, new FakePasswordEncoder()),
+      password: palinTextPassowrd,
     });
 
     const newPlainTextPassword = "new-password";
-    const newPassword = Password.create(
-      newPlainTextPassword,
-      fakePasswordEncoder
-    );
 
-    user.chagePassword(palinTextPassowrd, newPassword);
+    user.chagePassword(palinTextPassowrd, newPlainTextPassword);
 
     expect(
       fakePasswordEncoder.compare(newPlainTextPassword, user.passwordHash)
@@ -96,13 +97,11 @@ describe("UserEntity - Domain Entity", () => {
     const user = UserEntity.create({
       name,
       email,
-      password: Password.create(palinTextPassowrd, new FakePasswordEncoder()),
+      password: palinTextPassowrd,
     });
 
-    const newPassword = Password.create("new-password", fakePasswordEncoder);
-
     expect(() =>
-      user.chagePassword("incorrect-old-password", newPassword)
+      user.chagePassword("incorrect-old-password", "new-password")
     ).toThrowError(InvalidUserPassword);
   });
 });
