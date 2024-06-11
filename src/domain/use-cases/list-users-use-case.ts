@@ -10,7 +10,7 @@ interface ListUsersUseCaseResponse {
 }
 
 export class ListUsersUseCase {
-  constructor(private userRepository: UserRepository) {}
+  public constructor(private userRepository: UserRepository) {}
 
   public async execute({
     page,

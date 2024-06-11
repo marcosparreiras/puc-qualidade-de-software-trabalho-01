@@ -12,4 +12,13 @@ export class InMemoryUserRepository implements UserRepository {
     );
     return users;
   }
+
+  public async create(user: UserEntity): Promise<void> {
+    this.items.push(user);
+  }
+
+  public async findByEmail(email: string): Promise<UserEntity | null> {
+    const user = this.items.find((item) => item.email === email);
+    return user ?? null;
+  }
 }
