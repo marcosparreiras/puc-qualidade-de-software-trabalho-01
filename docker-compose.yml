@@ -1,0 +1,12 @@
+version: "3.7"
+
+services:
+  db_puc_qualidade_de_software:
+    image: postgres
+    container_name: db_puc_qualidade_de_software
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=my_db
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=admin
