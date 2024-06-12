@@ -5,6 +5,7 @@ export default defineConfig({
     globals: true,
     env: {
       DB_CONNECTION_URL: "postgres://admin:admin@127.0.0.1:5432/my_db",
+      PORT: "3333",
     },
   },
 });

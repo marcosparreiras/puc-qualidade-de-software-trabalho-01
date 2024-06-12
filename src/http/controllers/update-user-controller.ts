@@ -33,7 +33,9 @@ export async function updateUserController(
       oldPassword,
     });
 
-    return response.status(200).json({ user: httpUserPresenter(user) });
+    const locationUrl = `${request.protocol}://${request.hostname}${request.originalUrl}`;
+
+    return response.set("Location", locationUrl).status(204).json();
   } catch (error: unknown) {
     next(error);
   }

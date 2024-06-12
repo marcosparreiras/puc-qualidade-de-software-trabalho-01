@@ -4,7 +4,6 @@ interface HttpUserPresenter {
   _id: string;
   name: string;
   email: string;
-  password: string;
 }
 
 export function httpUserPresenter(user: UserEntity): HttpUserPresenter {
@@ -12,6 +11,5 @@ export function httpUserPresenter(user: UserEntity): HttpUserPresenter {
     _id: user.id,
     name: user.name,
     email: user.email,
-    password: user.passwordHash,
   };
 }

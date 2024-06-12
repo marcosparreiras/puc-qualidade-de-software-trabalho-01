@@ -18,7 +18,7 @@ export class FakePostgresUserFactory {
     return inMemoryUser;
   }
 
-  public static async mankeMany(
+  public static async makeMany(
     dbConnection: Sql,
     count: number
   ): Promise<UserEntity[]> {

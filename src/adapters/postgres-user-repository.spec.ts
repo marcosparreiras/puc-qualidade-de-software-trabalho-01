@@ -5,6 +5,7 @@ import { FakeUserFactory } from "../domain/test-utils/fake-user-factory";
 import { FakePasswordEncoder } from "../domain/test-utils/fake-password-encoder";
 import { FakePostgresUserFactory } from "./test-utils/fake-postgres-user-factory";
 import { PasswordEncoderRegistry } from "../domain/registry/password-encoder-registry";
+import { env } from "../../env";
 
 describe("BcryptPasswordEncoder - Adapter", () => {
   let fakePasswordEncoder: FakePasswordEncoder;
@@ -15,7 +16,7 @@ describe("BcryptPasswordEncoder - Adapter", () => {
     fakePasswordEncoder = new FakePasswordEncoder();
     PasswordEncoderRegistry.set(fakePasswordEncoder);
 
-    dbConnection = postgres(process.env.DB_CONNECTION_URL as string);
+    dbConnection = postgres(env.DB_CONNECTION_URL);
     sut = new PostgresUserRepository(dbConnection);
   });
 
@@ -87,7 +88,7 @@ describe("BcryptPasswordEncoder - Adapter", () => {
   });
 
   it("Should be able to find many users by page", async () => {
-    await FakePostgresUserFactory.mankeMany(dbConnection, 22);
+    await FakePostgresUserFactory.makeMany(dbConnection, 22);
 
     const resultP01 = await sut.findMany(1);
     const resultP02 = await sut.findMany(2);
