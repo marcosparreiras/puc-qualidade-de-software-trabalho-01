@@ -1,6 +1,7 @@
 import z from "zod";
 import { Request, Response, type NextFunction } from "express";
 import { ListUsersUseCase } from "../../domain/use-cases/list-users-use-case";
+import { httpUserPresenter } from "../utils/http-user-presenter";
 
 export async function listUsersController(
   request: Request,
@@ -15,7 +16,7 @@ export async function listUsersController(
     const { page } = querySchema.parse(request.query);
     const { users } = await ListUsersUseCase.execute({ page });
 
-    return response.status(200).json({ users });
+    return response.status(200).json({ users: users.map(httpUserPresenter) });
   } catch (error: unknown) {
     next(error);
   }

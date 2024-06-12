@@ -1,6 +1,7 @@
 import z from "zod";
 import { Request, Response, type NextFunction } from "express";
 import { UpdateUserUseCase } from "../../domain/use-cases/update-user-case";
+import { httpUserPresenter } from "../utils/http-user-presenter";
 
 export async function updateUserController(
   request: Request,
@@ -32,7 +33,7 @@ export async function updateUserController(
       oldPassword,
     });
 
-    return response.status(200).json({ user });
+    return response.status(200).json({ user: httpUserPresenter(user) });
   } catch (error: unknown) {
     next(error);
   }
