@@ -14,7 +14,7 @@ describe("BcryptPasswordEncoder - Adapter", () => {
 
   beforeAll(() => {
     fakePasswordEncoder = new FakePasswordEncoder();
-    PasswordEncoderRegistry.get().config(fakePasswordEncoder);
+    PasswordEncoderRegistry.set(fakePasswordEncoder);
 
     dbConnection = postgres(env.DB_CONNECTION_URL);
     sut = new PostgresUserRepository(dbConnection);
