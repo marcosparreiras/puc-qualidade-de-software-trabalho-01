@@ -1,4 +1,3 @@
-import type { UserRepository } from "../bondaries/user-repository";
 import type { UserEntity } from "../entities/user-entity";
 import { EmailAlreadyRegisteredException } from "../exceptions/email-already-registered-exception";
 import { UserNotFoundException } from "../exceptions/user-not-found-exception";

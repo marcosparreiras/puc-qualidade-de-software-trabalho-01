@@ -3,7 +3,7 @@ import { UserNotFoundException } from "../exceptions/user-not-found-exception";
 import { FakePasswordEncoder } from "../test-utils/fake-password-encoder";
 import { FakeUserFactory } from "../test-utils/fake-user-factory";
 import { InMemoryUserRepository } from "../test-utils/in-memory-user-reposiotry";
-import { UpdateUserUseCase } from "./update-user-user-case";
+import { UpdateUserUseCase } from "./update-user-case";
 import { InvalidUserPasswordExecption } from "../exceptions/invalid-user-password-exception";
 import { UserRepositoryRegistry } from "../registry/user-repository-registry";
 import { PasswordEncoderRegistry } from "../registry/password-encoder-registry";

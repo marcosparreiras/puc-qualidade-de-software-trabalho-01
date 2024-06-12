@@ -1,0 +1,40 @@
+
+# Listar todos os usuários
+GET http://localhost:3333/users
+
+###
+
+# Criar um novo usuário
+POST http://localhost:3333/users
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "email": "johnd2sss3ode@example.com",
+  "password": "123456"
+}
+
+### 
+
+# Detalhar um usuário
+GET http://localhost:3333/users/4c44a62f-8c39-454c-9e73-7e6829f855da
+
+### 
+
+# Atualizar um usuário
+PUT http://localhost:3333/users/4c44a62f-8c39-454c-9e73-7e6829f855da
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "email": "johnd2sss3ode@example.com",
+  "oldPassword": "123456",
+  "newPassword": "123456"
+}
+
+
+###
+
+# Remover um usuário 
+DELETE http://localhost:3333/users/4c44a62f-8c39-454c-9e73-7e6829f855da
+
