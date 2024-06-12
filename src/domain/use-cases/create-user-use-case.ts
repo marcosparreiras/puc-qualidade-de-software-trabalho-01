@@ -1,6 +1,7 @@
 import type { UserRepository } from "../bondaries/user-repository";
 import { UserEntity } from "../entities/user-entity";
 import { EmailAlreadyRegisteredException } from "../exceptions/email-already-registered-exception";
+import { UserRepositoryRegistry } from "../registry/user-repository-registry";
 
 interface CreateUserUseCaseRequest {
   name: string;
@@ -13,23 +14,20 @@ interface CreateUserUseCaseResponse {
 }
 
 export class CreateUserUseCase {
-  public constructor(private userRepository: UserRepository) {}
-
-  public async execute({
+  public static async execute({
     email,
     name,
     password,
   }: CreateUserUseCaseRequest): Promise<CreateUserUseCaseResponse> {
     await this.assertEmailIsAvailable(email);
     const user = await UserEntity.create({ email, name, password });
-    await this.userRepository.create(user);
+    await UserRepositoryRegistry.get().create(user);
     return { user };
   }
 
-  private async assertEmailIsAvailable(email: string): Promise<void> {
-    const EmailAlreadyRegistered = await this.userRepository.existsByEmail(
-      email
-    );
+  private static async assertEmailIsAvailable(email: string): Promise<void> {
+    const EmailAlreadyRegistered =
+      await UserRepositoryRegistry.get().existsByEmail(email);
     if (EmailAlreadyRegistered) {
       throw new EmailAlreadyRegisteredException();
     }

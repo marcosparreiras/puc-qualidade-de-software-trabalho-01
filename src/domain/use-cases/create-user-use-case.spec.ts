@@ -1,5 +1,6 @@
 import { EmailAlreadyRegisteredException } from "../exceptions/email-already-registered-exception";
 import { GlobalPasswordEncoder } from "../proxies/global-password-encoder";
+import { UserRepositoryRegistry } from "../registry/user-repository-registry";
 import { FakePasswordEncoder } from "../test-utils/fake-password-encoder";
 import { FakeUserFactory } from "../test-utils/fake-user-factory";
 import { InMemoryUserRepository } from "../test-utils/in-memory-user-reposiotry";
@@ -8,7 +9,6 @@ import { CreateUserUseCase } from "./create-user-use-case";
 describe("CreateUserUseCase - Domain Use Case", () => {
   let fakePasswordEncoder: FakePasswordEncoder;
   let inMemoryUserRepository: InMemoryUserRepository;
-  let sut: CreateUserUseCase;
 
   beforeAll(() => {
     fakePasswordEncoder = new FakePasswordEncoder();
@@ -17,7 +17,7 @@ describe("CreateUserUseCase - Domain Use Case", () => {
 
   beforeEach(() => {
     inMemoryUserRepository = new InMemoryUserRepository();
-    sut = new CreateUserUseCase(inMemoryUserRepository);
+    UserRepositoryRegistry.set(inMemoryUserRepository);
   });
 
   it("Should be able to create a new user", async () => {
@@ -25,7 +25,7 @@ describe("CreateUserUseCase - Domain Use Case", () => {
     const email = "johndoe@example.com";
     const password = "123456";
 
-    const response = await sut.execute({
+    const response = await CreateUserUseCase.execute({
       name,
       email,
       password,
@@ -58,7 +58,7 @@ describe("CreateUserUseCase - Domain Use Case", () => {
     const password = "123456";
 
     await expect(() =>
-      sut.execute({
+      CreateUserUseCase.execute({
         name,
         email,
         password,

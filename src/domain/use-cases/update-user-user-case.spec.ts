@@ -6,11 +6,11 @@ import { FakeUserFactory } from "../test-utils/fake-user-factory";
 import { InMemoryUserRepository } from "../test-utils/in-memory-user-reposiotry";
 import { UpdateUserUseCase } from "./update-user-user-case";
 import { InvalidUserPasswordExecption } from "../exceptions/invalid-user-password-exception";
+import { UserRepositoryRegistry } from "../registry/user-repository-registry";
 
 describe("UpdateUserUseCase - Domain Use Case", () => {
   let fakePasswordEncoder: FakePasswordEncoder;
   let inMemoryUserRepository: InMemoryUserRepository;
-  let sut: UpdateUserUseCase;
 
   beforeAll(() => {
     fakePasswordEncoder = new FakePasswordEncoder();
@@ -19,7 +19,7 @@ describe("UpdateUserUseCase - Domain Use Case", () => {
 
   beforeEach(() => {
     inMemoryUserRepository = new InMemoryUserRepository();
-    sut = new UpdateUserUseCase(inMemoryUserRepository);
+    UserRepositoryRegistry.set(inMemoryUserRepository);
   });
 
   it("Should be able to update a user data", async () => {
@@ -33,7 +33,7 @@ describe("UpdateUserUseCase - Domain Use Case", () => {
     const name = "John Doe";
     const newPassword = "654321";
 
-    const response = await sut.execute({
+    const response = await UpdateUserUseCase.execute({
       userId: someRegisteredUser.id,
       email,
       name,
@@ -66,7 +66,7 @@ describe("UpdateUserUseCase - Domain Use Case", () => {
     const oldPassword = "123456";
     const newPassword = "654321";
     await expect(() =>
-      sut.execute({
+      UpdateUserUseCase.execute({
         userId: "some-unexistent-user-id",
         email,
         name,
@@ -90,7 +90,7 @@ describe("UpdateUserUseCase - Domain Use Case", () => {
     const name = "John Doe";
     const newPassword = "654321";
 
-    const response = await sut.execute({
+    const response = await UpdateUserUseCase.execute({
       userId: user01.id,
       email,
       name,
@@ -116,7 +116,7 @@ describe("UpdateUserUseCase - Domain Use Case", () => {
     const newPassword = "654321";
 
     await expect(() =>
-      sut.execute({
+      UpdateUserUseCase.execute({
         userId: user02.id,
         email,
         name,
@@ -138,7 +138,7 @@ describe("UpdateUserUseCase - Domain Use Case", () => {
     const newPassword = "654321";
 
     await expect(() =>
-      sut.execute({
+      UpdateUserUseCase.execute({
         userId: user01.id,
         email,
         name,

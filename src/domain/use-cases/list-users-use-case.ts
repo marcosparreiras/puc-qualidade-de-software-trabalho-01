@@ -1,5 +1,5 @@
-import type { UserRepository } from "../bondaries/user-repository";
 import type { UserEntity } from "../entities/user-entity";
+import { UserRepositoryRegistry } from "../registry/user-repository-registry";
 
 interface ListUsersUseCaseRequest {
   page: number;
@@ -10,13 +10,13 @@ interface ListUsersUseCaseResponse {
 }
 
 export class ListUsersUseCase {
-  public constructor(private userRepository: UserRepository) {}
-
-  public async execute({
+  public static async execute({
     page,
   }: ListUsersUseCaseRequest): Promise<ListUsersUseCaseResponse> {
     page = page < 1 ? 1 : page;
-    const users: UserEntity[] = await this.userRepository.findMany(page);
+    const users: UserEntity[] = await UserRepositoryRegistry.get().findMany(
+      page
+    );
     return { users };
   }
 }
