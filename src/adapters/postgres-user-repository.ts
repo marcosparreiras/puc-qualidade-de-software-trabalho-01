@@ -11,8 +11,6 @@ interface UserDataRow {
 
 export class PostgresUserRepository implements UserRepository {
   private pageSize: number = 20;
-  private tableName: string = "users";
-  private fields = "_id, name, password, email";
   private dbConnection: postgres.Sql;
 
   public constructor(dbConnection: postgres.Sql) {
@@ -32,8 +30,8 @@ export class PostgresUserRepository implements UserRepository {
 
   public async findMany(page: number): Promise<UserEntity[]> {
     const data = (await this.dbConnection`
-    SELECT ${this.fields}
-    FROM ${this.tableName}
+    SELECT _id, name, password, email
+    FROM users
     LIMIT ${this.pageSize} 
     OFFSET ${(page - 1) * this.pageSize};`) as UserDataRow[];
     return data.map(this.toDomain);
@@ -41,8 +39,8 @@ export class PostgresUserRepository implements UserRepository {
 
   public async findById(id: string): Promise<UserEntity | null> {
     const data = (await this.dbConnection`
-    SELECT ${this.fields}
-    FROM ${this.tableName}
+    SELECT _id, name, password, email
+    FROM users
     WHERE _id = ${id}
     `) as UserDataRow[];
 
@@ -55,19 +53,19 @@ export class PostgresUserRepository implements UserRepository {
   public async existsByEmail(email: string): Promise<boolean> {
     const data = await this.dbConnection`
       SELECT _id
-      FROM ${this.tableName}
+      FROM users
       WHERE email = ${email}
       `;
     return data.length === 0 ? false : true;
   }
 
   public async create(user: UserEntity): Promise<void> {
-    await this.dbConnection`INSERT INTO ${this.tableName}(${this.fields})
+    await this.dbConnection`INSERT INTO users(_id, name, password, email)
               VALUES(${user.id}, ${user.name}, ${user.passwordHash}, ${user.email})`;
   }
 
   public async save(user: UserEntity): Promise<void> {
-    await this.dbConnection`UPDATE ${this.tableName} 
+    await this.dbConnection`UPDATE users 
               SET name = ${user.name}, email = ${user.email}, password = ${user.passwordHash}
               WHERE _id = ${user.id}`;
   }
