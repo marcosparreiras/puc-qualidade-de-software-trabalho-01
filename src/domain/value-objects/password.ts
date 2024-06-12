@@ -1,4 +1,4 @@
-import { GlobalPasswordEncoder } from "../proxies/global-password-encoder";
+import { PasswordEncoderRegistry } from "../registry/password-encoder-registry";
 
 export class Password {
   private cipher: string;
@@ -16,11 +16,11 @@ export class Password {
   }
 
   public static async create(plain: string): Promise<Password> {
-    const cipher = await GlobalPasswordEncoder.getInstance().hash(plain);
+    const cipher = await PasswordEncoderRegistry.get().hash(plain);
     return new Password(cipher);
   }
 
   public async compare(plain: string): Promise<boolean> {
-    return GlobalPasswordEncoder.getInstance().compare(plain, this.cipher);
+    return PasswordEncoderRegistry.get().compare(plain, this.cipher);
   }
 }

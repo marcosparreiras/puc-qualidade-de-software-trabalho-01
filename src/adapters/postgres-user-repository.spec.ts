@@ -4,8 +4,8 @@ import { PostgresUserRepository } from "./postgres-user-repository";
 import { env } from "../../env";
 import { FakeUserFactory } from "../domain/test-utils/fake-user-factory";
 import { FakePasswordEncoder } from "../domain/test-utils/fake-password-encoder";
-import { GlobalPasswordEncoder } from "../domain/proxies/global-password-encoder";
 import { FakePostgresUserFactory } from "./test-utils/fake-postgres-user-factory";
+import { PasswordEncoderRegistry } from "../domain/registry/password-encoder-registry";
 
 describe("BcryptPasswordEncoder - Adapter", () => {
   let fakePasswordEncoder: FakePasswordEncoder;
@@ -14,7 +14,7 @@ describe("BcryptPasswordEncoder - Adapter", () => {
 
   beforeAll(() => {
     fakePasswordEncoder = new FakePasswordEncoder();
-    GlobalPasswordEncoder.getInstance().config(fakePasswordEncoder);
+    PasswordEncoderRegistry.get().config(fakePasswordEncoder);
 
     dbConnection = postgres(env.DB_CONNECTION_URL);
     sut = new PostgresUserRepository(dbConnection);

@@ -1,5 +1,5 @@
 import { UserNotFoundException } from "../exceptions/user-not-found-exception";
-import { GlobalPasswordEncoder } from "../proxies/global-password-encoder";
+import { PasswordEncoderRegistry } from "../registry/password-encoder-registry";
 import { UserRepositoryRegistry } from "../registry/user-repository-registry";
 import { FakePasswordEncoder } from "../test-utils/fake-password-encoder";
 import { FakeUserFactory } from "../test-utils/fake-user-factory";
@@ -12,7 +12,7 @@ describe("DeleteUserUseCase - Domain Use Case", () => {
 
   beforeAll(() => {
     fakePasswordEncoder = new FakePasswordEncoder();
-    GlobalPasswordEncoder.getInstance().config(fakePasswordEncoder);
+    PasswordEncoderRegistry.set(fakePasswordEncoder);
   });
 
   beforeEach(() => {

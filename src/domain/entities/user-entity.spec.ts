@@ -1,5 +1,5 @@
 import { InvalidUserPasswordExecption } from "../exceptions/invalid-user-password-exception";
-import { GlobalPasswordEncoder } from "../proxies/global-password-encoder";
+import { PasswordEncoderRegistry } from "../registry/password-encoder-registry";
 import { FakePasswordEncoder } from "../test-utils/fake-password-encoder";
 import { UserEntity } from "./user-entity";
 
@@ -13,7 +13,7 @@ describe("UserEntity - Domain Entity", () => {
 
   beforeAll(async () => {
     fakePasswordEncoder = new FakePasswordEncoder();
-    GlobalPasswordEncoder.getInstance().config(fakePasswordEncoder);
+    PasswordEncoderRegistry.set(fakePasswordEncoder);
 
     name = "John Doe";
     email = "johndoe@example.com";

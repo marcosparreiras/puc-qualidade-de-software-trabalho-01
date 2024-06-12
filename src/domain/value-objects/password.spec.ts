@@ -1,5 +1,5 @@
 import type { PasswordEncoder } from "../bondaries/password-encoder";
-import { GlobalPasswordEncoder } from "../proxies/global-password-encoder";
+import { PasswordEncoderRegistry } from "../registry/password-encoder-registry";
 import { FakePasswordEncoder } from "../test-utils/fake-password-encoder";
 import { Password } from "./password";
 
@@ -10,7 +10,7 @@ describe("Password - Domain Value Object", () => {
 
   beforeAll(async () => {
     fakePasswordEncoder = new FakePasswordEncoder();
-    GlobalPasswordEncoder.getInstance().config(fakePasswordEncoder);
+    PasswordEncoderRegistry.set(fakePasswordEncoder);
 
     plainText = "123456";
     hash = await fakePasswordEncoder.hash(plainText);
