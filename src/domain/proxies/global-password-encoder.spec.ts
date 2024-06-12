@@ -2,8 +2,8 @@ import { EncoderNotRegisteredException } from "../exceptions/encoder-not-registe
 import { GlobalPasswordEncoder } from "./global-password-encoder";
 import { FakePasswordEncoder } from "../test-utils/fake-password-encoder";
 
-describe("GlobalPasswordEncoder - Domain Util", () => {
-  let fakePasswordEncoder = new FakePasswordEncoder();
+describe("GlobalPasswordEncoder - Domain Proxy", () => {
+  let fakePasswordEncoder: FakePasswordEncoder;
 
   beforeAll(() => {
     fakePasswordEncoder = new FakePasswordEncoder();
@@ -14,9 +14,9 @@ describe("GlobalPasswordEncoder - Domain Util", () => {
   });
 
   it("Should be able a singleton", () => {
-    const globalPasswordEncoder = GlobalPasswordEncoder.getInstance();
-    const globalPasswordEncoder2 = GlobalPasswordEncoder.getInstance();
-    expect(globalPasswordEncoder).toBe(globalPasswordEncoder2);
+    const globalPasswordEncoder01 = GlobalPasswordEncoder.getInstance();
+    const globalPasswordEncoder02 = GlobalPasswordEncoder.getInstance();
+    expect(globalPasswordEncoder01).toBe(globalPasswordEncoder02);
   });
 
   it("should be a virtual proxy for a password-encoder implementation", async () => {
