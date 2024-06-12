@@ -38,7 +38,7 @@ describe("PUT /users/:id - E2E", () => {
       newPassword: oldPassword,
     });
 
-    expect(response.statusCode).toEqual(204);
+    expect(response.statusCode).toEqual(200);
 
     const resourceUrl = new URL(response.headers["location"]);
     expect(resourceUrl).toBeTruthy();
@@ -70,7 +70,7 @@ describe("PUT /users/:id - E2E", () => {
       newPassword: newPassword,
     });
 
-    expect(response.statusCode).toEqual(204);
+    expect(response.statusCode).toEqual(200);
 
     const passwordHashOnDatabase =
       await dbConnection`SELECT password FROM users WHERE _id = ${user.id}`;

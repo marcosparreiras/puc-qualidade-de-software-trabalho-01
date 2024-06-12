@@ -1,7 +1,6 @@
 import z from "zod";
 import { Request, Response, type NextFunction } from "express";
 import { UpdateUserUseCase } from "../../domain/use-cases/update-user-case";
-import { httpUserPresenter } from "../utils/http-user-presenter";
 
 export async function updateUserController(
   request: Request,
@@ -25,7 +24,7 @@ export async function updateUserController(
       request.body
     );
 
-    const { user } = await UpdateUserUseCase.execute({
+    await UpdateUserUseCase.execute({
       userId: id,
       name,
       email,
@@ -35,7 +34,7 @@ export async function updateUserController(
 
     const locationUrl = `${request.protocol}://${request.hostname}${request.originalUrl}`;
 
-    return response.set("Location", locationUrl).status(204).json();
+    return response.set("Location", locationUrl).status(200).json();
   } catch (error: unknown) {
     next(error);
   }
