@@ -5,6 +5,7 @@ import { env } from "../../env";
 import { FakeUserFactory } from "../domain/utils/test/fake-user-factory";
 import { FakePasswordEncoder } from "../domain/utils/test/fake-password-encoder";
 import { GlobalPasswordEncoder } from "../domain/utils/global-password-encoder";
+import { FakePostgresUserFactory } from "./test-utils/fake-postgres-user-factory";
 
 describe("BcryptPasswordEncoder - Adapter", () => {
   let fakePasswordEncoder: FakePasswordEncoder;
@@ -35,17 +36,18 @@ describe("BcryptPasswordEncoder - Adapter", () => {
 
     const usersOnDatabase = await dbConnection`SELECT * FROM users`;
     expect(usersOnDatabase).toHaveLength(1);
-    expect(usersOnDatabase[0]._id).toEqual(inMemoryUser.id);
-    expect(usersOnDatabase[0].name).toEqual(inMemoryUser.name);
-    expect(usersOnDatabase[0].email).toEqual(inMemoryUser.email);
-    expect(usersOnDatabase[0].password).toEqual(inMemoryUser.passwordHash);
+    expect(usersOnDatabase[0]).toEqual(
+      expect.objectContaining({
+        _id: inMemoryUser.id,
+        name: inMemoryUser.name,
+        email: inMemoryUser.email,
+        password: inMemoryUser.passwordHash,
+      })
+    );
   });
 
   it("Should be able to check if an email is registered", async () => {
-    const inMemoryUser = await FakeUserFactory.makeOne();
-    await dbConnection`INSERT INTO users(_id, name, email, password)
-          VALUES(${inMemoryUser.id}, ${inMemoryUser.name},
-          ${inMemoryUser.email}, ${inMemoryUser.passwordHash})`;
+    const inMemoryUser = await FakePostgresUserFactory.mankeOne(dbConnection);
 
     const response01 = await sut.existsByEmail(inMemoryUser.email);
     const response02 = await sut.existsByEmail("unregisterd-email");
@@ -55,10 +57,7 @@ describe("BcryptPasswordEncoder - Adapter", () => {
   });
 
   it("Should be able to update a user", async () => {
-    const inMemoryUser = await FakeUserFactory.makeOne();
-    await dbConnection`INSERT INTO users(_id, name, email, password)
-          VALUES(${inMemoryUser.id}, ${inMemoryUser.name},
-          ${inMemoryUser.email}, ${inMemoryUser.passwordHash})`;
+    const inMemoryUser = await FakePostgresUserFactory.mankeOne(dbConnection);
 
     inMemoryUser.name = "John doe";
     await sut.save(inMemoryUser);
@@ -67,17 +66,18 @@ describe("BcryptPasswordEncoder - Adapter", () => {
       await dbConnection`SELECT * FROM users WHERE _id = ${inMemoryUser.id}`;
 
     expect(usersOnDatabase).toHaveLength(1);
-    expect(usersOnDatabase[0]._id).toEqual(inMemoryUser.id);
-    expect(usersOnDatabase[0].name).toEqual(inMemoryUser.name);
-    expect(usersOnDatabase[0].email).toEqual(inMemoryUser.email);
-    expect(usersOnDatabase[0].password).toEqual(inMemoryUser.passwordHash);
+    expect(usersOnDatabase[0]).toEqual(
+      expect.objectContaining({
+        _id: inMemoryUser.id,
+        name: inMemoryUser.name,
+        email: inMemoryUser.email,
+        password: inMemoryUser.passwordHash,
+      })
+    );
   });
 
   it("Should be able to find a user by id", async () => {
-    const inMemoryUser = await FakeUserFactory.makeOne();
-    await dbConnection`INSERT INTO users(_id, name, email, password)
-          VALUES(${inMemoryUser.id}, ${inMemoryUser.name},
-          ${inMemoryUser.email}, ${inMemoryUser.passwordHash})`;
+    const inMemoryUser = await FakePostgresUserFactory.mankeOne(dbConnection);
 
     const result01 = await sut.findById(inMemoryUser.id);
     const result02 = await sut.findById("some-fake-id");
@@ -88,12 +88,7 @@ describe("BcryptPasswordEncoder - Adapter", () => {
   });
 
   it("Should be able to find many users by page", async () => {
-    for (let i = 0; i < 22; i++) {
-      const inMemoryUser = await FakeUserFactory.makeOne();
-      await dbConnection`INSERT INTO users(_id, name, email, password)
-          VALUES(${inMemoryUser.id}, ${inMemoryUser.name},
-          ${inMemoryUser.email}, ${inMemoryUser.passwordHash})`;
-    }
+    await FakePostgresUserFactory.mankeMany(dbConnection, 22);
 
     const resultP01 = await sut.findMany(1);
     const resultP02 = await sut.findMany(2);
@@ -103,10 +98,7 @@ describe("BcryptPasswordEncoder - Adapter", () => {
   });
 
   it("Should be able to delete a user", async () => {
-    const inMemoryUser = await FakeUserFactory.makeOne();
-    await dbConnection`INSERT INTO users(_id, name, email, password)
-        VALUES(${inMemoryUser.id}, ${inMemoryUser.name},
-        ${inMemoryUser.email}, ${inMemoryUser.passwordHash})`;
+    const inMemoryUser = await FakePostgresUserFactory.mankeOne(dbConnection);
 
     await sut.delete(inMemoryUser);
 

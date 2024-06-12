@@ -21,9 +21,9 @@ export class FakeUserFactory {
       : UserEntity.create(props);
   }
 
-  static async makeMany(num: number): Promise<UserEntity[]> {
+  static async makeMany(count: number): Promise<UserEntity[]> {
     const users: UserEntity[] = [];
-    for (let i = 0; i < num; i++) {
+    for (let i = 0; i < count; i++) {
       users.push(await this.makeOne());
     }
     return users;
