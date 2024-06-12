@@ -1,6 +1,6 @@
 import { InvalidUserPasswordExecption } from "../exceptions/invalid-user-password-exception";
-import { GlobalPasswordEncoder } from "../utils/global-password-encoder";
-import { FakePasswordEncoder } from "../utils/test/fake-password-encoder";
+import { GlobalPasswordEncoder } from "../proxies/global-password-encoder";
+import { FakePasswordEncoder } from "../test-utils/fake-password-encoder";
 import { UserEntity } from "./user-entity";
 
 describe("UserEntity - Domain Entity", () => {

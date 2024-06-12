@@ -1,4 +1,4 @@
-import type { PasswordEncoder } from "../../bondaries/password-encoder";
+import type { PasswordEncoder } from "../bondaries/password-encoder";
 
 export class FakePasswordEncoder implements PasswordEncoder {
   private _hash: string = "-hashed";

@@ -1,8 +1,8 @@
 import { EmailAlreadyRegisteredException } from "../exceptions/email-already-registered-exception";
-import { GlobalPasswordEncoder } from "../utils/global-password-encoder";
-import { FakePasswordEncoder } from "../utils/test/fake-password-encoder";
-import { FakeUserFactory } from "../utils/test/fake-user-factory";
-import { InMemoryUserRepository } from "../utils/test/in-memory-user-reposiotry";
+import { GlobalPasswordEncoder } from "../proxies/global-password-encoder";
+import { FakePasswordEncoder } from "../test-utils/fake-password-encoder";
+import { FakeUserFactory } from "../test-utils/fake-user-factory";
+import { InMemoryUserRepository } from "../test-utils/in-memory-user-reposiotry";
 import { CreateUserUseCase } from "./create-user-use-case";
 
 describe("CreateUserUseCase - Domain Use Case", () => {

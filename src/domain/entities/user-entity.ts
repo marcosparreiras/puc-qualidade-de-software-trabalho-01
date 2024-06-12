@@ -1,6 +1,6 @@
 import { InvalidUserPasswordExecption } from "../exceptions/invalid-user-password-exception";
 import { Password } from "../value-objects/password";
-import { DomainEntity } from "./domain-entity";
+import { DomainEntity } from "./utils/domain-entity";
 
 interface UserEntityProps {
   name: string;

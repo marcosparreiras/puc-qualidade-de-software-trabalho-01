@@ -1,6 +1,6 @@
 import type { PasswordEncoder } from "../bondaries/password-encoder";
-import { GlobalPasswordEncoder } from "../utils/global-password-encoder";
-import { FakePasswordEncoder } from "../utils/test/fake-password-encoder";
+import { GlobalPasswordEncoder } from "../proxies/global-password-encoder";
+import { FakePasswordEncoder } from "../test-utils/fake-password-encoder";
 import { Password } from "./password";
 
 describe("Password - Domain Value Object", () => {

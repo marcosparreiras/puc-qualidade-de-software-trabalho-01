@@ -1,6 +1,6 @@
 import { EncoderNotRegisteredException } from "../exceptions/encoder-not-registered-exception";
 import { GlobalPasswordEncoder } from "./global-password-encoder";
-import { FakePasswordEncoder } from "./test/fake-password-encoder";
+import { FakePasswordEncoder } from "../test-utils/fake-password-encoder";
 
 describe("GlobalPasswordEncoder - Domain Util", () => {
   let fakePasswordEncoder = new FakePasswordEncoder();

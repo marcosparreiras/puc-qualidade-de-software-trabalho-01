@@ -1,8 +1,8 @@
 import { UserNotFoundException } from "../exceptions/user-not-found-exception";
-import { GlobalPasswordEncoder } from "../utils/global-password-encoder";
-import { FakePasswordEncoder } from "../utils/test/fake-password-encoder";
-import { FakeUserFactory } from "../utils/test/fake-user-factory";
-import { InMemoryUserRepository } from "../utils/test/in-memory-user-reposiotry";
+import { GlobalPasswordEncoder } from "../proxies/global-password-encoder";
+import { FakePasswordEncoder } from "../test-utils/fake-password-encoder";
+import { FakeUserFactory } from "../test-utils/fake-user-factory";
+import { InMemoryUserRepository } from "../test-utils/in-memory-user-reposiotry";
 import { GetUserUseCase } from "./get-user-use-case";
 
 describe("GetUserUseCase - Domain Use Case", () => {

@@ -1,5 +1,5 @@
-import type { UserRepository } from "../../bondaries/user-repository";
-import type { UserEntity } from "../../entities/user-entity";
+import type { UserRepository } from "../bondaries/user-repository";
+import type { UserEntity } from "../entities/user-entity";
 
 export class InMemoryUserRepository implements UserRepository {
   public items: UserEntity[] = [];

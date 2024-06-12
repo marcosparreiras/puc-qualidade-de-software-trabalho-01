@@ -1,5 +1,5 @@
 import type { Sql } from "postgres";
-import { FakeUserFactory } from "../../domain/utils/test/fake-user-factory";
+import { FakeUserFactory } from "../../domain/test-utils/fake-user-factory";
 import {
   UserEntity,
   UserEntityPropsWithPlainTextPassword,

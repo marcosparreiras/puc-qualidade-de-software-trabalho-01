@@ -1,7 +1,7 @@
 import {
   UserEntity,
   type UserEntityPropsWithPlainTextPassword,
-} from "../../entities/user-entity";
+} from "../entities/user-entity";
 import { faker } from "@faker-js/faker";
 
 export class FakeUserFactory {

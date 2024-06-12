@@ -2,9 +2,9 @@ import postgres from "postgres";
 import type { Sql } from "postgres";
 import { PostgresUserRepository } from "./postgres-user-repository";
 import { env } from "../../env";
-import { FakeUserFactory } from "../domain/utils/test/fake-user-factory";
-import { FakePasswordEncoder } from "../domain/utils/test/fake-password-encoder";
-import { GlobalPasswordEncoder } from "../domain/utils/global-password-encoder";
+import { FakeUserFactory } from "../domain/test-utils/fake-user-factory";
+import { FakePasswordEncoder } from "../domain/test-utils/fake-password-encoder";
+import { GlobalPasswordEncoder } from "../domain/proxies/global-password-encoder";
 import { FakePostgresUserFactory } from "./test-utils/fake-postgres-user-factory";
 
 describe("BcryptPasswordEncoder - Adapter", () => {

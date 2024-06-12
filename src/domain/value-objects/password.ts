@@ -1,4 +1,4 @@
-import { GlobalPasswordEncoder } from "../utils/global-password-encoder";
+import { GlobalPasswordEncoder } from "../proxies/global-password-encoder";
 
 export class Password {
   private cipher: string;

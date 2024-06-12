@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { FakeDomainEntityImp } from "../utils/test/fake-domain-entity-imp";
+import { FakeDomainEntityImp } from "../../test-utils/fake-domain-entity-imp";
 
 describe("DomainEntity - Domain Layer Super Type", () => {
   it("Should be able to create a new domain-entity", () => {

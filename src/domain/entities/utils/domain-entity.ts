@@ -1,4 +1,4 @@
-import { UniqueEntityId } from "../utils/unique-entity-id";
+import { UniqueEntityId } from "./unique-entity-id";
 
 export abstract class DomainEntity<Props> {
   private _id: UniqueEntityId;
