@@ -1,7 +1,6 @@
 import postgres from "postgres";
 import type { Sql } from "postgres";
 import { PostgresUserRepository } from "./postgres-user-repository";
-import { env } from "../../env";
 import { FakeUserFactory } from "../domain/test-utils/fake-user-factory";
 import { FakePasswordEncoder } from "../domain/test-utils/fake-password-encoder";
 import { FakePostgresUserFactory } from "./test-utils/fake-postgres-user-factory";
@@ -16,7 +15,7 @@ describe("BcryptPasswordEncoder - Adapter", () => {
     fakePasswordEncoder = new FakePasswordEncoder();
     PasswordEncoderRegistry.set(fakePasswordEncoder);
 
-    dbConnection = postgres(env.DB_CONNECTION_URL);
+    dbConnection = postgres(process.env.DB_CONNECTION_URL as string);
     sut = new PostgresUserRepository(dbConnection);
   });
 
