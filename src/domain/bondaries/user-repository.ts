@@ -6,4 +6,5 @@ export interface UserRepository {
   existsByEmail(email: string): Promise<boolean>;
   create(user: UserEntity): Promise<void>;
   save(user: UserEntity): Promise<void>;
+  delete(user: UserEntity): Promise<void>;
 }

@@ -101,4 +101,18 @@ describe("BcryptPasswordEncoder - Adapter", () => {
     expect(resultP01).toHaveLength(20);
     expect(resultP02).toHaveLength(2);
   });
+
+  it("Should be able to delete a user", async () => {
+    const inMemoryUser = await FakeUserFactory.makeOne();
+    await dbConnection`INSERT INTO users(_id, name, email, password)
+        VALUES(${inMemoryUser.id}, ${inMemoryUser.name},
+        ${inMemoryUser.email}, ${inMemoryUser.passwordHash})`;
+
+    await sut.delete(inMemoryUser);
+
+    const usersOnDatabase =
+      await dbConnection`SELECT * FROM users WHERE _id = ${inMemoryUser.id}`;
+
+    expect(usersOnDatabase).toHaveLength(0);
+  });
 });

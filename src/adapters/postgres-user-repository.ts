@@ -69,4 +69,8 @@ export class PostgresUserRepository implements UserRepository {
               SET name = ${user.name}, email = ${user.email}, password = ${user.passwordHash}
               WHERE _id = ${user.id}`;
   }
+
+  public async delete(user: UserEntity): Promise<void> {
+    await this.dbConnection`DELETE FROM users WHERE _id = ${user.id}`;
+  }
 }

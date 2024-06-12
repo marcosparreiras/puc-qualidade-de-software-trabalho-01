@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test:unit": "vitest run",
-    "test:integration": "vitest run --config ./vitest.config.integration.ts",
+    "test:unit": "vitest run ./src/domain",
+    "test:integration": "vitest run ./src/adapters",
     "db:migrate": "tsx --env-file=.env ./database/migrate-script.ts"
   },
   "keywords": [],
