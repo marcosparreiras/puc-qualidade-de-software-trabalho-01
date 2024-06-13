@@ -24,7 +24,7 @@ export async function updateUserController(
       request.body
     );
 
-    await UpdateUserUseCase.execute({
+    const { user } = await UpdateUserUseCase.execute({
       userId: id,
       name,
       email,
@@ -34,7 +34,7 @@ export async function updateUserController(
 
     const locationUrl = `${request.protocol}://${request.hostname}${request.originalUrl}`;
 
-    return response.set("Location", locationUrl).status(200).json();
+    return response.set("Location", locationUrl).status(200).json({ user });
   } catch (error: unknown) {
     next(error);
   }
