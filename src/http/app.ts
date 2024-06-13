@@ -1,5 +1,6 @@
 import express from "express";
 import postgres from "postgres";
+import cors from "cors";
 import { env } from "../../env";
 import { listUsersController } from "./controllers/list-users-controller";
 import { UserRepositoryRegistry } from "../domain/registry/user-repository-registry";
@@ -24,6 +25,11 @@ PasswordEncoderRegistry.set(passwordEncoder);
 export const app = express();
 
 app.use(express.json());
+app.use(
+  cors({
+    exposedHeaders: "X-Total-Count",
+  })
+);
 
 app.get("/users", listUsersController);
 app.post("/users", createUserController);
