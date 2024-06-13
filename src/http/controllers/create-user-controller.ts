@@ -22,7 +22,7 @@ export async function createUserController(
       request.originalUrl
     }/${user.id.toString()}`;
 
-    return response.set("Location", locationUrl).status(201).json();
+    return response.set("Location", locationUrl).status(201).json({ user });
   } catch (error: unknown) {
     next(error);
   }
