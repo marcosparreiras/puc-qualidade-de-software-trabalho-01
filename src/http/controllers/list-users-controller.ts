@@ -16,7 +16,10 @@ export async function listUsersController(
     const { page } = querySchema.parse(request.query);
     const { users } = await ListUsersUseCase.execute({ page });
 
-    return response.status(200).json({ users: users.map(httpUserPresenter) });
+    return response
+      .status(200)
+      .set("X-Total-Count", users.length.toString())
+      .json({ users: users.map(httpUserPresenter) });
   } catch (error: unknown) {
     next(error);
   }
