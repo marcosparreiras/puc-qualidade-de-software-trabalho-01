@@ -1,6 +1,7 @@
 import z from "zod";
 import { Request, Response, NextFunction } from "express";
 import { CreateUserUseCase } from "../../domain/use-cases/create-user-use-case";
+import { httpUserPresenter } from "../utils/http-user-presenter";
 
 export async function createUserController(
   request: Request,
@@ -22,7 +23,10 @@ export async function createUserController(
       request.originalUrl
     }/${user.id.toString()}`;
 
-    return response.set("Location", locationUrl).status(201).json({ user });
+    return response
+      .set("Location", locationUrl)
+      .status(201)
+      .json({ user: httpUserPresenter(user) });
   } catch (error: unknown) {
     next(error);
   }
