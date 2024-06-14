@@ -14,6 +14,7 @@ import { errorHandlerMiddleware } from "./middlewares/error-handler-middleware";
 import type { UserRepository } from "../domain/bondaries/user-repository";
 import type { PasswordEncoder } from "../domain/bondaries/password-encoder";
 import { updateUserController } from "./controllers/update-user-controller";
+import { deleteAllUsersControllerFactory } from "./controllers/delete-all-users-controller";
 
 const dbConnection = postgres(env.DB_CONNECTION_URL);
 const userRepository: UserRepository = new PostgresUserRepository(dbConnection);
@@ -36,5 +37,6 @@ app.post("/users", createUserController);
 app.get("/users/:id", getUserContoller);
 app.put("/users/:id", updateUserController);
 app.delete("/users/:id", deleteUserController);
+app.delete("/users", deleteAllUsersControllerFactory(dbConnection));
 
 app.use(errorHandlerMiddleware);
